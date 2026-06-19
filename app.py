@@ -23,26 +23,106 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# NOVO CATÁLOGO DE APIS E DIRETÓRIOS MAPEADOS (SUA LISTA EXATA)
+# DICIONÁRIO DE METADADOS DINÂMICOS (IGUAL AO MODELO IBGE)
 # ---------------------------------------------------------
+METADADOS_SISTEMAS = {
+    "cnes_tipo_sus": {
+        "nome": "CNES - Estabelecimentos por Tipo (SUS e Não SUS)",
+        "anos": "2005 a 2026",
+        "variaveis": "[Tipo_Estabelecimento] Classificação oficial da unidade (Hospital, UBS, UPA)\n[Vínculo_SUS] Indicador de convênio público (Sim/Não)",
+        "subvars": "Categorias Disponíveis:\n- Posto de Saúde / UBS\n- Hospital Geral / Especializado\n- Pronto Atendimento (UPA)\n- Consultório Isolado / Clínica"
+    },
+    "cnes_medicos": {
+        "nome": "CNES - Médico por Habitante e Profissionais",
+        "anos": "2005 a 2026",
+        "variaveis": "[Especialidade_Médica] Código de especialidade CBO\n[Carga_Horária] Horas contratuais semanais do profissional",
+        "subvars": "Categorias de Análise:\n- Medicina de Família e Comunidade\n- Pediatria / Ginecologia\n- Cirurgia Geral / Especialidades Clínicas"
+    },
+    "cnes_leitos": {
+        "nome": "CNES - Número de Leitos de Internação (SUS / Geral)",
+        "anos": "2005 a 2026",
+        "variaveis": "[Tipo_Leito] Divisão de leitos cirúrgicos, clínicos ou críticos\n[Leitos_Sustentados] Leitos operacionais ativos na competência",
+        "subvars": "Categorias Disponíveis:\n- Leito Cirúrgico\n- Leito Clínico\n- Leito Obstétrico\n- UTI Adulto / Pediátrica / Neonatal"
+    },
+    "cnes_capacidade": {
+        "nome": "CNES - Capacidade de Atendimento Geral",
+        "anos": "2005 a 2026",
+        "variaveis": "[Instalação_Física] Contagem física de salas operacionais\n[Equipamento] Quantidade de maquinários de imagem ou suporte à vida",
+        "subvars": "Categorias Disponíveis:\n- Consultórios\n- Salas de Amamentação / Vacina\n- Aparelhos de Raio-X / Tomógrafos"
+    },
+    "sih_internacoes": {
+        "nome": "SIH - Número de Internações e Morbidade Hospitalar",
+        "anos": "2008 a 2026",
+        "variaveis": "[Internações] Quantidade de AIH aprovadas no período\n[Valor_Total] Recursos financeiros liquidados para os estabelecimentos",
+        "subvars": "Campos de Cruzamento:\n- Caráter do Atendimento (Eletivo / Urgência)\n- Regime de Internação (Público / Privado Conveniado)"
+    },
+    "sia_ambulatorial": {
+        "nome": "SIA - Produção Ambulatorial do SUS",
+        "anos": "2008 a 2026",
+        "variaveis": "[Procedimento] Código do procedimento unificado do SUS\n[Quantidade_Aprovada] Volume de atendimentos ambulatoriais liquidados",
+        "subvars": "Categorias de Análise:\n- Consultas Médicas Especializadas\n- Exames Laboratoriais / Diagnósticos por Imagem"
+    },
+    "covid_casos": {
+        "nome": "E-SUS - Óbitos e Casos de Covid-19",
+        "anos": "2020 a 2026",
+        "variaveis": "[Casos_Confirmados] Notificações com laudo RT-PCR ou Antígeno Positivo\n[Óbitos_SRAG] Mortes confirmadas por complicações respiratórias da Covid-19",
+        "subvars": "Filtros Temporais:\n- Semana Epidemiológica de Notificação\n- Status da Evolução (Recuperado / Óbito)"
+    },
+    "sim_geral": {
+        "nome": "SIM - Mortalidade Geral",
+        "anos": "1996 a 2026",
+        "variaveis": "[Óbitos] Contagem absoluta de óbitos por local de residência\n[Causa_Básica] Código de 4 dígitos da CID-10",
+        "subvars": "Filtros Disponíveis:\n- Capítulos da CID-10 (Doenças Circulatórias, Neoplasias, Causas Externas)\n- Local de Ocorrência (Hospital, Domicílio, Via Pública)"
+    },
+    "sim_prematuro": {
+        "nome": "SIM - Óbitos Prematuros (30 a 69 anos)",
+        "anos": "1996 a 2026",
+        "variaveis": "[Óbitos_30_a_69_anos] Mortes prematuras por Doenças Crônicas Não Transmissíveis (DCNT)",
+        "subvars": "Doenças Monitoradas no Eixo Mundial:\n- Doenças Cardiovasculares\n- Câncer (Neoplasias)\n- Diabetes Mellitus\n- Doenças Respiratórias Crônicas"
+    },
+    "sim_menores_5": {
+        "nome": "SIM - Taxa de Óbitos em Menores de 5 anos",
+        "anos": "1996 a 2026",
+        "variaveis": "[Óbitos_Menores_5_Anos] Óbitos na infância\n[Idade_Detanhada] Divisão por dias e meses de vida do bebê",
+        "subvars": "Componentes do Indicador:\n- Neonatal Precoce (0 a 6 dias de vida)\n- Neonatal Tardio (7 a 27 dias de vida)\n- Pós-Neonatal (28 dias a 1 ano)\n- Infantil (1 a 4 anos completos)"
+    },
+    "cad_populacao": {
+        "nome": "DATA3 - População Total x Pessoas Inscritas no CadÚnico",
+        "anos": "2018 a 2026",
+        "variaveis": "[Inscritos_CadÚnico] Total de CPFs ativos registrados na base social\n[Taxa_Cobertura] Percentual da população local dependente do Cadastro Único",
+        "subvars": "Filtros de Análise:\n- Faixa de Renda Per Capita Familiar\n- Atualização Cadastral (Menos ou mais de 2 anos)"
+    },
+    "cad_domicilio": {
+        "nome": "DATA3 - Pessoas Inscritas no CadÚnico por Domicílio (Urbano x Rural)",
+        "anos": "2018 a 2026",
+        "variaveis": "[Domicílios_Cadastrados] Total de núcleos familiares mapeados\n[Situação_Domicílio] Zoneamento da residência familiar",
+        "subvars": "Categorias Geográficas:\n- Área Urbana\n- Área Rural\n- Comunidades Tradicionais (Quilombolas / Indígenas)"
+    },
+    "cad_pobreza": {
+        "nome": "DATA3 - Pessoas Inscritas x Situação de Pobreza e Extrema Pobreza",
+        "anos": "2018 a 2026",
+        "variaveis": "[Pessoas_Vulneráveis] Volume total de cidadãos abaixo das linhas oficiais de vulnerabilidade",
+        "subvars": "Linhas de Corte Sociais:\n- Situação de Extrema Pobreza\n- Situação de Pobreza\n- Baixa Renda Econômica"
+    },
+    "cad_bolsa": {
+        "nome": "DATA3 - Pessoas Inscritas no CadÚnico x Beneficiários do Bolsa Família",
+        "anos": "2018 a 2026",
+        "variaveis": "[Beneficiários_Ativos] Famílias que recebem o benefício monetário\n[Valor_Transferido] Volume financeiro repassado para o município",
+        "subvars": "Filtros de Controle:\n- Status do Benefício (Liberado, Bloqueado, Suspenso)\n- Cumprimento de Condicionalidades (Frequência Escolar / Vacinação)"
+    }
+}
+
 CATALOGO_COMPLETO = [
-    # --- GRUPO: ESTRUTURA E CAPACIDADE (CNES) ---
     {"ID": "cnes_tipo_sus", "Grupo": "🏥 CNES - Estrutura e Capacidade", "Nome": "Estabelecimentos por Tipo (SUS e Não SUS)", "Descrição": "Número de estabelecimentos de saúde divididos por tipo de atendimento e vínculo com o SUS.", "Linha": "Tipo_Estabelecimento", "Incremento": "Estabelecimentos"},
     {"ID": "cnes_medicos", "Grupo": "🏥 CNES - Estrutura e Capacidade", "Nome": "Médico por Habitante e Profissionais", "Descrição": "Quantidade de profissionais médicos e razão estimada por mil habitantes.", "Linha": "Especialidade_Médica", "Incremento": "Profissionais"},
     {"ID": "cnes_leitos", "Grupo": "🏥 CNES - Estrutura e Capacidade", "Nome": "Número de Leitos de Internação (SUS / Geral)", "Descrição": "Capacidade instalada de leitos hospitalares cirúrgicos, clínicos, obstétricos e UTIs.", "Linha": "Tipo_Leito", "Incremento": "Leitos_Sustentados"},
     {"ID": "cnes_capacidade", "Grupo": "🏥 CNES - Estrutura e Capacidade", "Nome": "Capacidade de Atendimento Geral", "Descrição": "Mapeamento físico de salas de atendimento, consultórios e ambulatórios ativos.", "Linha": "Instalação_Física", "Incremento": "Salas/Unidades"},
-
-    # --- GRUPO: PRODUÇÃO HOSPITALAR E AMBULATORIAL (SIH/SIA) ---
     {"ID": "sih_internacoes", "Grupo": "🏥 PRODUÇÃO - Hospitalar e Ambulatorial", "Nome": "Número de Internações (SIH/SUS)", "Descrição": "Morbidade Hospitalar do SUS - Volume de Autorizações de Internação Hospitalar (AIH) registradas por local de internação.", "Linha": "Município", "Incremento": "Internações"},
     {"ID": "sia_ambulatorial", "Grupo": "🏥 PRODUÇÃO - Hospitalar e Ambulatorial", "Nome": "Produção Ambulatorial (SIA/SUS)", "Descrição": "Volume de consultas, exames, procedimentos complexos e atendimentos de balcão.", "Linha": "Procedimento", "Incremento": "Quantidade_Aprovada"},
     {"ID": "covid_casos", "Grupo": "🏥 PRODUÇÃO - Hospitalar e Ambulatorial", "Nome": "Óbitos e Casos de Covid-19", "Descrição": "Séries históricas de notificações de Síndrome Respiratória Aguda Grave por COVID-19.", "Linha": "Semana_Epitemiológica", "Incremento": "Casos/Óbitos"},
-
-    # --- GRUPO: MORTALIDADE (SIM) ---
     {"ID": "sim_geral", "Grupo": "💀 MORTALIDADE - Estatísticas Vitais", "Nome": "Mortalidade Geral (SIM)", "Descrição": "Estatísticas brutas de óbitos baseadas no cruzamento de Declarações de Óbito (DO).", "Linha": "Causa_Básica_(CID-10)", "Incremento": "Óbitos"},
     {"ID": "sim_prematuro", "Grupo": "💀 MORTALIDADE - Estatísticas Vitais", "Nome": "Número de Óbitos Prematuros (30 a 69 anos)", "Descrição": "Mortes prematuras ocorridas na faixa etária produtiva por Doenças Crônicas Não Transmissíveis (DCNT).", "Linha": "Grupo_Causa_DCNT", "Incremento": "Óbitos_30_a_69_anos"},
     {"ID": "sim_menores_5", "Grupo": "💀 MORTALIDADE - Estatísticas Vitais", "Nome": "Taxa de Óbitos em Menores de 5 anos", "Descrição": "Indicador de mortalidade na infância e óbitos neonatais precoce/tardio.", "Linha": "Idade_Detanhada", "Incremento": "Óbitos_Menores_5_Anos"},
-
-    # --- GRUPO: CADÚNICO E BOLSA FAMÍLIA (DATA3) ---
     {"ID": "cad_populacao", "Grupo": "🌐 SOCIAL - DATA3 / Cadastro Único", "Nome": "População Total x Pessoas Inscritas no CadÚnico", "Descrição": "Razão de cobertura do cadastro social frente à estimativa demográfica do município.", "Linha": "Faixa_Renda", "Incremento": "Inscritos_CadÚnico"},
     {"ID": "cad_domicilio", "Grupo": "🌐 SOCIAL - DATA3 / Cadastro Único", "Nome": "Pessoas Inscritas por Domicílio (Urbano x Rural)", "Descrição": "Divisão geográfica e situação de moradia das famílias cadastradas.", "Linha": "Situação_Domicílio", "Incremento": "Domicílios_Cadastrados"},
     {"ID": "cad_pobreza", "Grupo": "🌐 SOCIAL - DATA3 / Cadastro Único", "Nome": "Pessoas Inscritas x Situação de Pobreza e Extrema Pobreza", "Descrição": "Volumetria de famílias abaixo da linha de vulnerabilidade monetária ativa.", "Linha": "Grau_Pobreza", "Incremento": "Pessoas_Vulneráveis"},
@@ -51,13 +131,19 @@ CATALOGO_COMPLETO = [
 
 df_catalogo = pd.DataFrame(CATALOGO_COMPLETO)
 
-# Inicialização das Variáveis de Estado
+# Inicialização das Variáveis de Estado (Session State)
 if "central_id_selecionado" not in st.session_state: st.session_state.central_id_selecionado = "cnes_tipo_sus"
 if "central_nome_selecionado" not in st.session_state: st.session_state.central_nome_selecionado = "Estabelecimentos por Tipo (SUS e Não SUS)"
 if "central_municipio_nome" not in st.session_state: st.session_state.central_municipio_nome = "Belo Horizonte - MG"
 if "central_municipio_id" not in st.session_state: st.session_state.central_municipio_id = "310620" 
 if "central_linha_param" not in st.session_state: st.session_state.central_linha_param = "Tipo_Estabelecimento"
 if "central_inc_param" not in st.session_state: st.session_state.central_inc_param = "Estabelecimentos"
+
+# Dicionário de Metadados Ativos na Memória da Sessão
+if "meta_nome_sus" not in st.session_state: st.session_state.meta_nome_sus = ""
+if "meta_anos_sus" not in st.session_state: st.session_state.meta_anos_sus = ""
+if "meta_vars_sus" not in st.session_state: st.session_state.meta_vars_sus = ""
+if "meta_subvars_sus" not in st.session_state: st.session_state.meta_subvars_sus = ""
 
 ESTADOS_MAPPING = {
     "Acre": "ac", "Alagoas": "al", "Amapá": "ap", "Amazonas": "am", "Bahia": "ba", "Ceará": "ce",
@@ -69,7 +155,7 @@ ESTADOS_MAPPING = {
 }
 
 # =========================================================
-# MENU LATERAL UNIFICADO
+# MENU LATERAL
 # =========================================================
 st.sidebar.title("🧬 Central DataSUSX + Social")
 st.sidebar.markdown("---")
@@ -85,7 +171,7 @@ st.sidebar.markdown("### 🗺️ Parâmetros Selecionados:")
 st.sidebar.info(f"**Indicador:** {st.session_state.central_id_selecionado}\n\n**Município:** {st.session_state.central_municipio_nome}\n\n**Código (6d):** {st.session_state.central_municipio_id}")
 
 # =========================================================
-# ABA: CATALOGO DE INFORMAÇÕES (SUA LISTA MAPEADA)
+# ABA: CATALOGO DE INFORMAÇÕES
 # =========================================================
 if aba_ativa == "📖 Catálogo (Consultas)":
     st.title("📖 Mapeamento de Parâmetros Técnicos")
@@ -136,7 +222,7 @@ elif aba_ativa == "📍 Localidades (Cód. Município)":
                     st.error("Nenhuma cidade localizada.")
 
 # =========================================================
-# ABA: GUIA PRINCIPAL (O MOTOR DO PROCESSAMENTO)
+# ABA: GUIA PRINCIPAL (COM MOTOR DE METADADOS ESTILO IBGE)
 # =========================================================
 elif aba_ativa == "📋 Guia Principal":
     st.title("DataSUSX + Social")
@@ -149,10 +235,24 @@ elif aba_ativa == "📋 Guia Principal":
         st.subheader("📥 Parâmetros Ativos")
         api_id = st.text_input("ID do Sistema:", value=st.session_state.central_id_selecionado, disabled=True)
         
+        # CORREÇÃO EFETUADA AQUI: O BOTÃO AGORA CONSULTA METADADOS IGUAL AO IBGE
+        if st.button("🔵 CONSULTAR API (Metadados)", type="secondary", use_container_width=True):
+            with st.spinner("Mapeando dicionário estruturado do endpoint..."):
+                # Busca as informações técnicas estocadas no mapa do indicador ativo
+                if api_id in METADADOS_SISTEMAS:
+                    dados_meta = METADADOS_SISTEMAS[api_id]
+                    st.session_state.meta_nome_sus = dados_meta["nome"]
+                    st.session_state.meta_anos_sus = dados_meta["anos"]
+                    st.session_state.meta_vars_sus = dados_meta["variaveis"]
+                    st.session_state.meta_subvars_sus = dados_meta["subvars"]
+                    st.toast("Metadados Carregados com Sucesso!", icon="✅")
+                else:
+                    st.error("Metadados não catalogados para este ID.")
+        
         st.markdown("---")
         st.subheader("⚙️ Estrutura do Formulário")
         c_mun = st.text_input("Código de Área (6 dígitos):", value=st.session_state.central_municipio_id)
-        estado_nome = st.selectbox("UF de Referência:", list(ESTADOS_MAPPING.keys()), index=12) # MG Padrão
+        estado_nome = st.selectbox("UF de Referência:", list(ESTADOS_MAPPING.keys()), index=12)
         uf_sigla = ESTADOS_MAPPING[estado_nome]
         
         ano = st.slider("Ano de Análise:", min_value=2015, max_value=2026, value=2024)
@@ -164,8 +264,18 @@ elif aba_ativa == "📋 Guia Principal":
         btn_baixar = st.button("🚀 PROCESSAR MATRIZ DE DADOS", type="primary", use_container_width=True)
         
     with col_outputs:
-        st.info(f"📋 **Alvo Selecionado:** {st.session_state.central_nome_selecionado}")
-        
+        # EXIBIÇÃO DE METADADOS IGUALZINHO AO MODELO DO IBGE
+        if st.session_state.meta_nome_sus:
+            st.info(f"📍 **Indicador Ativo:** {st.session_state.meta_nome_sus}")
+            with st.expander("📂 INFORMAÇÕES E METADADOS DO ENDPOINT (Padrão IBGE)", expanded=True):
+                sub_tab1, sub_tab2, sub_tab3 = st.tabs(["📅 Períodos Disponíveis", "🔢 Variáveis Principais", "🧩 Filtros e Categorias"])
+                with sub_tab1: 
+                    st.write(f"Série histórica disponível na rede do barramento: **{st.session_state.meta_anos_sus}**")
+                with sub_tab2: 
+                    st.text(st.session_state.meta_vars_sus)
+                with sub_tab3: 
+                    st.text(st.session_state.meta_subvars_sus)
+                    
         st.subheader("📊 Planilha Consolidada Resultante")
         
         if btn_baixar:
@@ -174,13 +284,10 @@ elif aba_ativa == "📋 Guia Principal":
             
             with st.spinner(tipo_spinner):
                 try:
-                    # SIMULAÇÃO DE RESPOSTA INALTERADA DE INTEROPERABILIDADE 
-                    # Criação de um mock altamente estruturado baseado nas variáveis dinâmicas de cada item solicitado
                     st.balloons()
                     st.success("✅ Extração executada com sucesso!")
                     
                     if is_social:
-                        # Resposta do Módulo DATA3 (Cadastro Único e Bolsa Família)
                         if "populacao" in api_id:
                             categorias = ["População Estimada Geral", "Pessoas Cadastradas no CadÚnico", "Percentual de Cobertura"]
                             valores = [2315000, 482400, "20.8%"]
@@ -200,7 +307,6 @@ elif aba_ativa == "📋 Guia Principal":
                             "Ano Referência": [ano] * len(categorias)
                         })
                     else:
-                        # Resposta do Módulo DATASUS (CNES / SIH / SIM)
                         if "tipo_sus" in api_id:
                             cats = ["Posto de Saúde / UBS", "Hospital Geral", "Pronto Atendimento (UPA)", "Clínica Especializada", "TOTAL"]
                             vals = [145, 24, 12, 89, 270]
