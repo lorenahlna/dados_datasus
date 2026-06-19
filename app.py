@@ -23,92 +23,106 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# DICIONÁRIO DE METADADOS DINÂMICOS (IGUAL AO MODELO IBGE)
+# DICIONÁRIO DE METADADOS DINÂMICOS (Mapeamento de Filtros)
 # ---------------------------------------------------------
 METADADOS_SISTEMAS = {
     "cnes_tipo_sus": {
         "nome": "CNES - Estabelecimentos por Tipo (SUS e Não SUS)",
-        "anos": "2005 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Estabelecimentos Conveniados", "Leitos Operacionais"],
         "variaveis": "[Tipo_Estabelecimento] Classificação oficial da unidade (Hospital, UBS, UPA)\n[Vínculo_SUS] Indicador de convênio público (Sim/Não)",
-        "subvars": "Categorias Disponíveis:\n- Posto de Saúde / UBS\n- Hospital Geral / Especializado\n- Pronto Atendimento (UPA)\n- Consultório Isolado / Clínica"
+        "subvars": ["Posto de Saúde / UBS", "Hospital Geral", "Pronto Atendimento (UPA)", "Clínica Especializada"]
     },
     "cnes_medicos": {
         "nome": "CNES - Médico por Habitante e Profissionais",
-        "anos": "2005 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Profissionais Ativos", "Horas Contratuais Semanais", "Razão por 1.000 hab."],
         "variaveis": "[Especialidade_Médica] Código de especialidade CBO\n[Carga_Horária] Horas contratuais semanais do profissional",
-        "subvars": "Categorias de Análise:\n- Medicina de Família e Comunidade\n- Pediatria / Ginecologia\n- Cirurgia Geral / Especialidades Clínicas"
+        "subvars": ["Clínica Médica", "Pediatria", "Ginecologia e Obstetrícia", "Cirurgia Geral"]
     },
     "cnes_leitos": {
         "nome": "CNES - Número de Leitos de Internação (SUS / Geral)",
-        "anos": "2005 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Leitos Sustentados SUS", "Leitos Não SUS", "Total Leitos"],
         "variaveis": "[Tipo_Leito] Divisão de leitos cirúrgicos, clínicos ou críticos\n[Leitos_Sustentados] Leitos operacionais ativos na competência",
-        "subvars": "Categorias Disponíveis:\n- Leito Cirúrgico\n- Leito Clínico\n- Leito Obstétrico\n- UTI Adulto / Pediátrica / Neonatal"
+        "subvars": ["Leitos Cirúrgicos", "Leitos Clínicos", "Leitos Obstétricos", "UTI Adulto Tipo II"]
     },
     "cnes_capacidade": {
         "nome": "CNES - Capacidade de Atendimento Geral",
-        "anos": "2005 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Salas Ativas", "Equipamentos em Uso"],
         "variaveis": "[Instalação_Física] Contagem física de salas operacionais\n[Equipamento] Quantidade de maquinários de imagem ou suporte à vida",
-        "subvars": "Categorias Disponíveis:\n- Consultórios\n- Salas de Amamentação / Vacina\n- Aparelhos de Raio-X / Tomógrafos"
+        "subvars": ["Consultórios", "Salas de Vacina", "Aparelhos de Raio-X", "Tomógrafos"]
     },
     "sih_internacoes": {
         "nome": "SIH - Número de Internações e Morbidade Hospitalar",
-        "anos": "2008 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Internações (AIH)", "Valor Total Liquido (R$)", "Dias de Permanência"],
         "variaveis": "[Internações] Quantidade de AIH aprovadas no período\n[Valor_Total] Recursos financeiros liquidados para os estabelecimentos",
-        "subvars": "Campos de Cruzamento:\n- Caráter do Atendimento (Eletivo / Urgência)\n- Regime de Internação (Público / Privado Conveniado)"
+        "subvars": ["Atendimento de Urgência", "Atendimento Eletivo"]
     },
     "sia_ambulatorial": {
         "nome": "SIA - Produção Ambulatorial do SUS",
-        "anos": "2008 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Quantidade Aprovada", "Valor Aprovado (R$)"],
         "variaveis": "[Procedimento] Código do procedimento unificado do SUS\n[Quantidade_Aprovada] Volume de atendimentos ambulatoriais liquidados",
-        "subvars": "Categorias de Análise:\n- Consultas Médicas Especializadas\n- Exames Laboratoriais / Diagnósticos por Imagem"
+        "subvars": ["Consultas Médicas Especializadas", "Exames Laboratoriais", "Radiodiagnósticos"]
     },
     "covid_casos": {
         "nome": "E-SUS - Óbitos e Casos de Covid-19",
-        "anos": "2020 a 2026",
-        "variaveis": "[Casos_Confirmados] Notificações com laudo RT-PCR ou Antígeno Positivo\n[Óbitos_SRAG] Mortes confirmadas por complicações respiratórias da Covid-19",
-        "subvars": "Filtros Temporais:\n- Semana Epidemiológica de Notificação\n- Status da Evolução (Recuperado / Óbito)"
+        "anos": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Casos Confirmados", "Óbitos Confirmados", "Internações SRAG"],
+        "variaveis": "[Casos_Confirmados] Notificações com laudo Positivo\n[Óbitos_SRAG] Mortes por complicações respiratórias",
+        "subvars": ["Sintomáticos", "Assintomáticos"]
     },
     "sim_geral": {
         "nome": "SIM - Mortalidade Geral",
-        "anos": "1996 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Óbitos Absolutos", "Média de Idade ao Óbito"],
         "variaveis": "[Óbitos] Contagem absoluta de óbitos por local de residência\n[Causa_Básica] Código de 4 dígitos da CID-10",
-        "subvars": "Filtros Disponíveis:\n- Capítulos da CID-10 (Doenças Circulatórias, Neoplasias, Causas Externas)\n- Local de Ocorrência (Hospital, Domicílio, Via Pública)"
+        "subvars": ["Doenças Circulatórias", "Neoplasias (Câncer)", "Causas Externas (Acidentes/Violência)"]
     },
     "sim_prematuro": {
         "nome": "SIM - Óbitos Prematuros (30 a 69 anos)",
-        "anos": "1996 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Óbitos 30 a 69 anos", "Taxa por 100k hab."],
         "variaveis": "[Óbitos_30_a_69_anos] Mortes prematuras por Doenças Crônicas Não Transmissíveis (DCNT)",
-        "subvars": "Doenças Monitoradas no Eixo Mundial:\n- Doenças Cardiovasculares\n- Câncer (Neoplasias)\n- Diabetes Mellitus\n- Doenças Respiratórias Crônicas"
+        "subvars": ["Doenças Cardiovasculares", "Câncer", "Diabetes Mellitus", "Doenças Respiratórias Crônicas"]
     },
     "sim_menores_5": {
         "nome": "SIM - Taxa de Óbitos em Menores de 5 anos",
-        "anos": "1996 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Óbitos Menores de 5 Anos", "Óbitos Neonatais (<28 dias)"],
         "variaveis": "[Óbitos_Menores_5_Anos] Óbitos na infância\n[Idade_Detanhada] Divisão por dias e meses de vida do bebê",
-        "subvars": "Componentes do Indicador:\n- Neonatal Precoce (0 a 6 dias de vida)\n- Neonatal Tardio (7 a 27 dias de vida)\n- Pós-Neonatal (28 dias a 1 ano)\n- Infantil (1 a 4 anos completos)"
+        "subvars": ["Neonatal Precoce (0-6 dias)", "Neonatal Tardio (7-27 dias)", "Pós-neonatal (28 dias a 1 ano)", "1 a 4 anos completos"]
     },
     "cad_populacao": {
         "nome": "DATA3 - População Total x Pessoas Inscritas no CadÚnico",
-        "anos": "2018 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Inscritos CadÚnico", "Famílias Cadastradas", "Percentual de Cobertura (%)"],
         "variaveis": "[Inscritos_CadÚnico] Total de CPFs ativos registrados na base social\n[Taxa_Cobertura] Percentual da população local dependente do Cadastro Único",
-        "subvars": "Filtros de Análise:\n- Faixa de Renda Per Capita Familiar\n- Atualização Cadastral (Menos ou mais de 2 anos)"
+        "subvars": ["Extrema Pobreza", "Pobreza", "Baixa Renda"]
     },
     "cad_domicilio": {
         "nome": "DATA3 - Pessoas Inscritas no CadÚnico por Domicílio (Urbano x Rural)",
-        "anos": "2018 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Domicílios Mapeados", "Total de Moradores Cobertos"],
         "variaveis": "[Domicílios_Cadastrados] Total de núcleos familiares mapeados\n[Situação_Domicílio] Zoneamento da residência familiar",
-        "subvars": "Categorias Geográficas:\n- Área Urbana\n- Área Rural\n- Comunidades Tradicionais (Quilombolas / Indígenas)"
+        "subvars": ["Área Urbana", "Área Rural"]
     },
     "cad_pobreza": {
         "nome": "DATA3 - Pessoas Inscritas x Situação de Pobreza e Extrema Pobreza",
-        "anos": "2018 a 2026",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Pessoas Vulneráveis", "Benefícios Concedidos"],
         "variaveis": "[Pessoas_Vulneráveis] Volume total de cidadãos abaixo das linhas oficiais de vulnerabilidade",
-        "subvars": "Linhas de Corte Sociais:\n- Situação de Extrema Pobreza\n- Situação de Pobreza\n- Baixa Renda Econômica"
+        "subvars": ["Situação de Extrema Pobreza", "Situação de Pobreza"]
     },
     "cad_bolsa": {
-        "nome": "DATA3 - Pessoas Inscritas no CadÚnico x Beneficiários do Bolsa Família",
-        "anos": "2018 a 2026",
+        "nome": "DATA3 - Pessoas Inscritas no CadÚnico x Beneficiários do PBF",
+        "anos": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "metricas_coluna": ["Beneficiários Ativos", "Recursos Repassados (R$)", "Valor Médio por Família"],
         "variaveis": "[Beneficiários_Ativos] Famílias que recebem o benefício monetário\n[Valor_Transferido] Volume financeiro repassado para o município",
-        "subvars": "Filtros de Controle:\n- Status do Benefício (Liberado, Bloqueado, Suspenso)\n- Cumprimento de Condicionalidades (Frequência Escolar / Vacinação)"
+        "subvars": ["Benefício Liberado", "Benefício Bloqueado/Suspenso"]
     }
 }
 
@@ -132,18 +146,18 @@ CATALOGO_COMPLETO = [
 df_catalogo = pd.DataFrame(CATALOGO_COMPLETO)
 
 # Inicialização das Variáveis de Estado (Session State)
-if "central_id_selecionado" not in st.session_state: st.session_state.central_id_selecionado = "cnes_tipo_sus"
-if "central_nome_selecionado" not in st.session_state: st.session_state.central_nome_selecionado = "Estabelecimentos por Tipo (SUS e Não SUS)"
+if "central_id_selecionado" not in st.session_state: st.session_state.central_id_selecionado = "cnes_medicos"
+if "central_nome_selecionado" not in st.session_state: st.session_state.central_nome_selecionado = "Médico por Habitante e Profissionais"
 if "central_municipio_nome" not in st.session_state: st.session_state.central_municipio_nome = "Belo Horizonte - MG"
 if "central_municipio_id" not in st.session_state: st.session_state.central_municipio_id = "310620" 
-if "central_linha_param" not in st.session_state: st.session_state.central_linha_param = "Tipo_Estabelecimento"
-if "central_inc_param" not in st.session_state: st.session_state.central_inc_param = "Estabelecimentos"
+if "central_linha_param" not in st.session_state: st.session_state.central_linha_param = "Especialidade_Médica"
+if "central_inc_param" not in st.session_state: st.session_state.central_inc_param = "Profissionais"
 
-# Dicionário de Metadados Ativos na Memória da Sessão
-if "meta_nome_sus" not in st.session_state: st.session_state.meta_nome_sus = ""
-if "meta_anos_sus" not in st.session_state: st.session_state.meta_anos_sus = ""
-if "meta_vars_sus" not in st.session_state: st.session_state.meta_vars_sus = ""
-if "meta_subvars_sus" not in st.session_state: st.session_state.meta_subvars_sus = ""
+# Estado dos metadados ativos (Padrão inicial preenchido com cnes_medicos para sincronizar com o print)
+if "meta_nome_sus" not in st.session_state: st.session_state.meta_nome_sus = "CNES - Médico por Habitante e Profissionais"
+if "meta_anos_sus" not in st.session_state: st.session_state.meta_anos_sus = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+if "meta_vars_sus" not in st.session_state: st.session_state.meta_vars_sus = "Profissionais Ativos, Horas Contratuais Semanais, Razão por 1.000 hab."
+if "meta_subvars_sus" not in st.session_state: st.session_state.meta_subvars_sus = ["Clínica Médica", "Pediatria", "Ginecologia e Obstetrícia", "Cirurgia Geral"]
 
 ESTADOS_MAPPING = {
     "Acre": "ac", "Alagoas": "al", "Amapá": "ap", "Amazonas": "am", "Bahia": "ba", "Ceará": "ce",
@@ -190,15 +204,21 @@ if aba_ativa == "📖 Catálogo (Consultas)":
                     st.session_state.central_nome_selecionado = row['Nome']
                     st.session_state.central_linha_param = row['Linha']
                     st.session_state.central_inc_param = row['Incremento']
-                    st.success(f"Eixo '{row['Nome']}' carregado no SessionState!")
+                    
+                    # Atualiza os metadados dinamicamente no clique igual ao IBGE
+                    if row['ID'] in METADADOS_SISTEMAS:
+                        dm = METADADOS_SISTEMAS[row['ID']]
+                        st.session_state.meta_nome_sus = dm["nome"]
+                        st.session_state.meta_anos_sus = dm["anos"]
+                        st.session_state.meta_vars_sus = ", ".join(dm["metricas_coluna"])
+                        st.session_state.meta_subvars_sus = dm["subvars"]
+                    st.success(f"Eixo '{row['Nome']}' e Metadados carregados!")
 
 # =========================================================
-# ABA: LOCALIDADES (GERADOR DE CÓDIGO)
+# ABA: LOCALIDADES
 # =========================================================
 elif aba_ativa == "📍 Localidades (Cód. Município)":
     st.title("📍 Localizador de Municípios Integrado")
-    st.markdown("Gere o código de 6 dígitos aceito de forma universal nas requisições do DATASUS e DATA3.")
-    
     termo_busca = st.text_input("Digite o nome da cidade:", value="").strip()
     if termo_busca:
         with st.spinner("Buscando malhas geográficas..."):
@@ -208,7 +228,6 @@ elif aba_ativa == "📍 Localidades (Cód. Município)":
                 if filtrados:
                     opcoes_mun = {f"{m['nome']} - {m['microrregiao']['mesorregiao']['UF']['sigla']}": str(m['id']) for m in filtrados}
                     municipio_escolhido = st.selectbox("Selecione a localidade correta:", list(opcoes_mun.keys()))
-                    
                     id_datasus_sagicad = opcoes_mun[municipio_escolhido][:-1]
                     
                     st.markdown(f"📍 Município Ativo: **{municipio_escolhido}**")
@@ -218,11 +237,9 @@ elif aba_ativa == "📍 Localidades (Cód. Município)":
                         st.session_state.central_municipio_nome = municipio_escolhido
                         st.session_state.central_municipio_id = id_datasus_sagicad
                         st.success("Configuração salva!")
-                else:
-                    st.error("Nenhuma cidade localizada.")
 
 # =========================================================
-# ABA: GUIA PRINCIPAL (COM MOTOR DE METADADOS ESTILO IBGE)
+# ABA: GUIA PRINCIPAL (COMPLETAMENTE ADAPTADA PARA FILTROS AVANÇADOS)
 # =========================================================
 elif aba_ativa == "📋 Guia Principal":
     st.title("DataSUSX + Social")
@@ -235,19 +252,14 @@ elif aba_ativa == "📋 Guia Principal":
         st.subheader("📥 Parâmetros Ativos")
         api_id = st.text_input("ID do Sistema:", value=st.session_state.central_id_selecionado, disabled=True)
         
-        # CORREÇÃO EFETUADA AQUI: O BOTÃO AGORA CONSULTA METADADOS IGUAL AO IBGE
         if st.button("🔵 CONSULTAR API (Metadados)", type="secondary", use_container_width=True):
-            with st.spinner("Mapeando dicionário estruturado do endpoint..."):
-                # Busca as informações técnicas estocadas no mapa do indicador ativo
-                if api_id in METADADOS_SISTEMAS:
-                    dados_meta = METADADOS_SISTEMAS[api_id]
-                    st.session_state.meta_nome_sus = dados_meta["nome"]
-                    st.session_state.meta_anos_sus = dados_meta["anos"]
-                    st.session_state.meta_vars_sus = dados_meta["variaveis"]
-                    st.session_state.meta_subvars_sus = dados_meta["subvars"]
-                    st.toast("Metadados Carregados com Sucesso!", icon="✅")
-                else:
-                    st.error("Metadados não catalogados para este ID.")
+            if api_id in METADADOS_SISTEMAS:
+                dm = METADADOS_SISTEMAS[api_id]
+                st.session_state.meta_nome_sus = dm["nome"]
+                st.session_state.meta_anos_sus = dm["anos"]
+                st.session_state.meta_vars_sus = ", ".join(dm["metricas_coluna"])
+                st.session_state.meta_subvars_sus = dm["subvars"]
+                st.toast("Metadados Sincronizados!", icon="✅")
         
         st.markdown("---")
         st.subheader("⚙️ Estrutura do Formulário")
@@ -255,86 +267,77 @@ elif aba_ativa == "📋 Guia Principal":
         estado_nome = st.selectbox("UF de Referência:", list(ESTADOS_MAPPING.keys()), index=12)
         uf_sigla = ESTADOS_MAPPING[estado_nome]
         
-        ano = st.slider("Ano de Análise:", min_value=2015, max_value=2026, value=2024)
+        # MELHORIA 1: PERÍODO MULTISELECT (Escolha mais de um ano para gerar série temporal)
+        lista_anos_disponiveis = METADADOS_SISTEMAS[api_id]["anos"] if api_id in METADADOS_SISTEMAS else [2022, 2023, 2024, 2025, 2026]
+        anos_selecionados = st.multiselect("Selecione o Período (Anos desejados):", options=lista_anos_disponiveis, default=[2024])
         
-        linha_param = st.text_input("Agrupamento das Linhas (Variável):", value=st.session_state.central_linha_param)
-        inc_param = st.text_input("Métrica do Incremento (Valores):", value=st.session_state.central_inc_param)
+        linha_param = st.text_input("Agrupamento das Linhas (Variável de Corte):", value=st.session_state.central_linha_param)
+        
+        # MELHORIA 2: FILTRO DE SUBVARIÁVEIS (Escolha quais categorias específicas de linha exibir)
+        lista_subvars_disponiveis = st.session_state.meta_subvars_sus if isinstance(st.session_state.meta_subvars_sus, list) else [st.session_state.central_linha_param]
+        subvars_filtradas = st.multiselect("Filtrar Subvariáveis (Categorias de Linha):", options=lista_subvars_disponiveis, default=lista_subvars_disponiveis)
+        
+        # MELHORIA 3: FILTRO DE VARIÁVEIS DE COLUNA (Escolha se quer ver Profissionais, Horas, etc.)
+        lista_metricas_disponiveis = METADADOS_SISTEMAS[api_id]["metricas_coluna"] if api_id in METADADOS_SISTEMAS else [st.session_state.central_inc_param]
+        metricas_selecionadas = st.multiselect("Variáveis Principais (Métricas da Coluna):", options=lista_metricas_disponiveis, default=[lista_metricas_disponiveis[0]])
         
         st.markdown("<br>", unsafe_allow_html=True)
         btn_baixar = st.button("🚀 PROCESSAR MATRIZ DE DADOS", type="primary", use_container_width=True)
         
     with col_outputs:
-        # EXIBIÇÃO DE METADADOS IGUALZINHO AO MODELO DO IBGE
         if st.session_state.meta_nome_sus:
             st.info(f"📍 **Indicador Ativo:** {st.session_state.meta_nome_sus}")
             with st.expander("📂 INFORMAÇÕES E METADADOS DO ENDPOINT (Padrão IBGE)", expanded=True):
-                sub_tab1, sub_tab2, sub_tab3 = st.tabs(["📅 Períodos Disponíveis", "🔢 Variáveis Principais", "🧩 Filtros e Categorias"])
+                sub_tab1, sub_tab2, sub_tab3 = st.tabs(["📅 Períodos Cobertos", "🔢 Variáveis de Coluna", "🧩 Subvariáveis da Linha"])
                 with sub_tab1: 
-                    st.write(f"Série histórica disponível na rede do barramento: **{st.session_state.meta_anos_sus}**")
+                    st.write(f"Série histórica indexável: **{st.session_state.meta_anos_sus}**")
                 with sub_tab2: 
                     st.text(st.session_state.meta_vars_sus)
                 with sub_tab3: 
-                    st.text(st.session_state.meta_subvars_sus)
+                    st.text("\n".join([f"- {s}" for s in lista_subvars_disponiveis]))
                     
         st.subheader("📊 Planilha Consolidada Resultante")
         
         if btn_baixar:
-            is_social = "SOCIAL" in df_catalogo[df_catalogo["ID"] == api_id]["Grupo"].values[0]
-            tipo_spinner = "Exfiltrando dados do barramento DATA3..." if is_social else "Conectando ao barramento TabNet..."
-            
-            with st.spinner(tipo_spinner):
-                try:
+            if not anos_selecionados:
+                st.error("Erro: Selecione ao menos um ano para o Período.")
+            elif not metricas_selecionadas:
+                st.error("Erro: Selecione ao menos uma Variável Principal de Coluna.")
+            elif not subvars_filtradas:
+                st.error("Erro: Selecione ao menos uma Subvariável de Linha.")
+            else:
+                with st.spinner("Processando cruzamento avançado de matrizes..."):
                     st.balloons()
-                    st.success("✅ Extração executada com sucesso!")
+                    st.success("✅ Extração e cruzamento de variáveis executados com sucesso!")
                     
-                    if is_social:
-                        if "populacao" in api_id:
-                            categorias = ["População Estimada Geral", "Pessoas Cadastradas no CadÚnico", "Percentual de Cobertura"]
-                            valores = [2315000, 482400, "20.8%"]
-                        elif "domicilio" in api_id:
-                            categorias = ["Domicílios Urbanos", "Domicílios Rurais", "Não Informado / Sem Logradouro"]
-                            valores = [142000, 15400, 310]
-                        elif "pobreza" in api_id:
-                            categorias = ["Situação de Extrema Pobreza", "Situação de Pobreza", "Baixa Renda acima da Linha"]
-                            valores = [184500, 92100, 205800]
-                        else:
-                            categorias = ["Inscritos CadÚnico Elegíveis", "Beneficiários Recebendo PBF", "Famílias com Condicionalidades Pendentes"]
-                            valores = [482400, 310620, 4500]
-                            
-                        df_resultado = pd.DataFrame({
-                            f"{linha_param}": categorias,
-                            "Métrica": valores,
-                            "Ano Referência": [ano] * len(categorias)
-                        })
-                    else:
-                        if "tipo_sus" in api_id:
-                            cats = ["Posto de Saúde / UBS", "Hospital Geral", "Pronto Atendimento (UPA)", "Clínica Especializada", "TOTAL"]
-                            vals = [145, 24, 12, 89, 270]
-                        elif "medicos" in api_id:
-                            cats = ["Clínica Médica", "Pediatria", "Ginecologia e Obstetrícia", "Cirurgia Geral", "TOTAL"]
-                            vals = [1200, 450, 380, 290, 2320]
-                        elif "leitos" in api_id:
-                            cats = ["Leitos Cirúrgicos", "Leitos Clínicos", "Leitos Obstétricos", "UTI Adulto Tipo II", "TOTAL"]
-                            vals = [450, 890, 310, 120, 1770]
-                        elif "prematuro" in api_id:
-                            cats = ["Doenças do Aparelho Circulatório", "Neoplasias (Câncer)", "Diabetes Mellitus", "Doenças Respiratórias Crônicas", "TOTAL"]
-                            vals = [1240, 980, 410, 230, 2860]
-                        elif "menores_5" in api_id:
-                            cats = ["Período Neonatal Precoce (0-6 dias)", "Período Neonatal Tardio (7-27 dias)", "Pós-neonatal (28 dias a 1 ano)", "1 a 4 anos completos", "TOTAL"]
-                            vals = [45, 18, 22, 12, 97]
-                        else:
-                            cats = ["Região Hub Centro", "Polo Regional Norte", "Polo Regional Sul", "Zonas Limitrofes", "TOTAL"]
-                            vals = [18450, 9120, 12300, 5100, 45150]
-                            
-                        df_resultado = pd.DataFrame({
-                            f"{linha_param}": cats,
-                            f"{inc_param} ({ano})": vals
-                        })
+                    # Montagem dinâmica e inteligente da tabela cruzando as seleções feitas pelo usuário
+                    base_dict = {f"{linha_param}": subvars_filtradas}
+                    
+                    # O loop cria colunas combinando cada Métrica selecionada com cada Ano selecionado no período
+                    for m in metricas_selecionadas:
+                        for a in anos_selecionados:
+                            # Simulação de valores proporcionais consistentes para o mock do CNES/MDS
+                            if "Horas" in m:
+                                base_dict[f"{m} ({a})"] = [42000, 18500, 14200, 11900][:len(subvars_filtradas)]
+                            elif "Habitante" in m or "Percentual" in m or "Razão" in m:
+                                base_dict[f"{m} ({a})"] = ["2.4", "0.9", "1.1", "0.7"][:len(subvars_filtradas)]
+                            elif "Valor" in m:
+                                base_dict[f"{m} ({a})"] = [540000, 310000, 89000, 45000][:len(subvars_filtradas)]
+                            else:
+                                base_dict[f"{m} ({a})"] = [1200, 450, 380, 290][:len(subvars_filtradas)]
+                    
+                    df_resultado = pd.DataFrame(base_dict)
+                    
+                    # Adiciona a linha totalizadora calculada automaticamente no rodapé se houver colunas numéricas
+                    df_numerico = df_resultado.select_dtypes(include=['number'])
+                    if not df_numerico.empty and "Habitante" not in "".join(metricas_selecionadas):
+                        linha_total = {f"{linha_param}": "TOTAL"}
+                        for col in df_numerico.columns:
+                            linha_total[col] = df_resultado[col].sum()
+                        df_resultado = pd.concat([df_resultado, pd.DataFrame([linha_total])], ignore_index=True)
                         
                     st.dataframe(df_resultado, use_container_width=True)
                     csv = df_resultado.to_csv(index=False).encode('utf-8')
-                    st.download_button(label="💾 Exportar Relatório Consolidado (CSV)", data=csv, file_name=f"extracao_{api_id}_{c_mun}.csv", mime="text/csv", use_container_width=True)
-                except Exception as e:
-                    st.error(f"Erro na requisição: {str(e)}")
+                    st.download_button(label="💾 Exportar Relatório Customizado (CSV)", data=csv, file_name=f"cruzamento_{api_id}_{c_mun}.csv", mime="text/csv", use_container_width=True)
         else:
-            st.info("Aguardando parametrização. Defina os eixos e clique em **PROCESSAR MATRIZ DE DADOS**.")
+            st.info("Ajuste os filtros de período e variáveis na coluna da esquerda e processe os dados.")
