@@ -6,3 +6,6 @@ fastparquet
 pyarrow
 dbfread
 wget
+urllib3
+duckdb
+pyreaddbc>=2.0.4
